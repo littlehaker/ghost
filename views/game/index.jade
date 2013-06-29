@@ -1,0 +1,13 @@
+html
+  head
+    script(src='/components/jquery/jquery.min.js')
+    script(src='/components/socket.io.min.js')
+    != assets.tag('/js/test.js')
+    script
+      var io = io.connect()
+      io.emit('join:room')
+  body
+    if user
+      h1= user.name
+    else
+      p need login

@@ -1,0 +1,25 @@
+extends layout
+
+append js
+
+block content
+  form.form-horizontal(action="/register", method="post")
+      fieldset
+        legend 注册
+        // Text input
+        .control-group
+          label.control-label(for='name') 昵称
+          .controls
+            input#name.input-xlarge(type='text', name='name', placeholder='昵称', required='')
+            p.help-block 填写你的昵称
+        // Password input
+        .control-group
+          label.control-label(for='password') 密码
+          .controls
+            input#password.input-xlarge(type='password', name='password', placeholder='密码', required='')
+            p.help-block 填写你的密码
+        // Button
+        .control-group
+          label.control-label(for='OK')
+          .controls
+            button#OK.btn.btn-primary 确定
