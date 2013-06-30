@@ -2,11 +2,9 @@ html
   head
     script(src='/components/jquery/jquery.min.js')
     script(src='/components/socket.io.min.js')
-    != assets.tag('/js/test.js')
-    script
-      var io = io.connect()
-      io.emit('join:room')
+    != assets.tag('/js/game/index.js')
   body
+    input#roomid(type='hidden', value=roomid)
     if user
       h1= user.name
     else
