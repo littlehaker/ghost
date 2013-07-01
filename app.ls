@@ -18,6 +18,7 @@ load 'config', {extlist: ['.ls']}
   .then 'routes'
   .into app
 
+
 app.listen app.config.server.port
 
 exports.app = app

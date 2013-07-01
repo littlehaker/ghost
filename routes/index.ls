@@ -1,6 +1,6 @@
 module.exports = (app) ->
   # app.resource 'users', app.controllers.user
-  app.get '/', (req, res) -> res.render 'game/index.jade', {req.user}
+  app.get '/', (req, res) -> res.send req.user
   # app.io.route 'ready', (req) ->
   #   console.log 'ready', req.data
   #   req.io.join req.data

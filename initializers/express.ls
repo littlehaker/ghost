@@ -59,13 +59,16 @@ module.exports = (app) ->
     app.io.enable 'browser client minification'
     app.io.enable 'browser client gzip'  
     app.io.set 'log level', 4
+    # app.io.use passportSocketIo.authorize {
+    old_auth = app.io.get 'authorization'
     app.io.set "authorization", passportSocketIo.authorize {
       passport: passport
       cookieParser: express.cookieParser
       key: app.config.session.key
       secret: app.config.session.secret
       store: app.config.session.store
-      # success: (data, accept) ->
+      success: (data, accept) ->
+        old_auth data, accept
       #   accept null, true
       # fail: (data, accept) ->
       #   accept null, false

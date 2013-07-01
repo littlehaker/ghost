@@ -1,11 +1,22 @@
-html
+html(ng-app='ghost')
   head
     script(src='/components/jquery/jquery.min.js')
+    script(src='/components/angular/angular.min.js')
     script(src='/components/socket.io.min.js')
-    != assets.tag('/js/game/index.js')
+    link(href='/css/bootstrap.css')
+    != assets.tag('/js/game/controllers.js')
+    != assets.tag('/js/game/services.js')
+    != assets.tag('/js/game/app.js')
+
   body
     input#roomid(type='hidden', value=roomid)
     if user
       h1= user.name
     else
       p need login
+    .chat-box(ng-controller='ChatCtrl')
+      ul.msgs
+        li.msg(ng-repeat='msg in msgs')
+          p {{msg.content}}
+      input(ng-model='my_msg')
+      button.btn.btn-primary(ng-click='sendMsg()') 发送
