@@ -1,3 +1,7 @@
+# prelude
+prelude = require 'prelude-ls'
+global <<< prelude
+
 express = require 'express.io'
 # 这里修改了express-resource的源码，将express指向express.io
 require 'express-resource'
