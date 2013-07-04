@@ -1,3 +1,5 @@
+Word = require '../models/word'
+  
 module.exports = (app) ->
   class Game
     (opts) ->
@@ -44,17 +46,23 @@ module.exports = (app) ->
         @nextPlayer!
     # 分配身份
     alloc: ~>
+      err, word <~ Word.random
+      @word = word
+      debug err, word
+      [word1, word2] = word.words.split ','
       for key, player of @players
         @order.push key
         if player.user.name is 'a'
           player.role = 'ghost'
+          player.word = word1
           @ghosts[key] = player
-          player.socket.emit 'game:sysmsg', '你是鬼'
+          # player.socket.emit 'game:sysmsg', '你是鬼'
         else
           player.role = 'peasant'
+          player.word = word2
           @peasants[key] = player
-          player.socket.emit 'game:sysmsg', '你是平民'
-          
+          # player.socket.emit 'game:sysmsg', '你是平民'
+        player.socket.emit 'game:sysmsg', "你的词语是#{player.word}"
       # 开始第一轮
       @nextRound!
     endVote: ~>
