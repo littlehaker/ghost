@@ -7,6 +7,10 @@ passportSocketIo = require 'passport.socketio'
 rack = require 'asset-rack'
 LiveScriptAsset = require 'asset-rack-livescript'
 
+formage = require 'formage-admin'
+fs = require 'fs'
+path = require 'path'
+
 module.exports = (app) ->
   assets = new rack.Rack [
     new rack.DynamicAssets {
@@ -53,6 +57,14 @@ module.exports = (app) ->
     passport.deserializeUser (id, done) ->
       User.findById id, (err, user) ->
         done err, user
+    models = []
+    (fs.readdirSync "#{__dirname}/../models").forEach ((file) ->
+      name = (file.replace '.js', '').replace '.ls', ''
+      return  if /[#~]/.test file
+      if name is 'index' then return 
+      models[name] := require '../models/' + name)
+    admin = formage.init app, express, models, {title: 'Formage-Admin Example'}
+
   app.configure 'development', -> app.use express.errorHandler!
 
   app.io.configure ->

@@ -36,7 +36,8 @@ module.exports = (app) ->
             @max_vote = p.vote
       , @players
     onMsg: (user, data) ~>
-      player = @players[user._id]
+      player = @players[user.id]
+      data.from = user.name
       @broadcast 'game:msg', data
       if @order[@current_order] is user._id.toString!
         @current_order = @current_order + 1

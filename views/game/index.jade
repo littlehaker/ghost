@@ -1,9 +1,9 @@
 html(ng-app='ghost')
   head
+    link(rel="stylesheet", href='/css/bootstrap.css')
     script(src='/components/jquery/jquery.min.js')
     script(src='/components/angular/angular.min.js')
     script(src='/components/socket.io.min.js')
-    link(href='/css/bootstrap.css')
     != assets.tag('/js/game/controllers.js')
     != assets.tag('/js/game/services.js')
     != assets.tag('/js/game/app.js')
@@ -15,8 +15,8 @@ html(ng-app='ghost')
     else
       p need login
     .chat-box(ng-controller='ChatCtrl')
-      ul.msgs
+      ul.msgs.unstyled
         li.msg(ng-repeat='msg in msgs')
-          p {{msg.content}}
-      input(ng-model='my_msg')
+          p(data-ng-class="{muted: msg.from == 'system'}") {{msg.from}}：{{msg.content}}
+      input(ng-model='my_msg', type="text")
       button.btn.btn-primary(ng-click='sendMsg()') 发送

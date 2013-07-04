@@ -15,6 +15,7 @@
       $io.on 'game:sysmsg', (content)->
         $scope.$apply ->
           $scope.msgs.push {
+            from: 'system'
             content: content
           }
       $io.emit 'room:join', room
