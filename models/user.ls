@@ -34,5 +34,6 @@ schema.statics.register = (spec, cb) ->
       user.save cb
   
 schema.methods.toString = -> @name
-
+schema.virtual 'id' .get ->
+  @_id.toString!
 users = module.exports = mongoose.model 'User', schema

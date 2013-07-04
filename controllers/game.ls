@@ -10,6 +10,7 @@ module.exports = (app) ->
     # game.broadcast 'game:msg', req.data
 
   app.io.route 'game:vote', (req) ->
+    game = app.GameCenter.findGame req.session.room
     user = req.handshake.user
     info "#{user.name} vote for #{req.data}"
     game.onVote user, req.data

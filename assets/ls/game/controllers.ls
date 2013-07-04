@@ -22,6 +22,7 @@
         if $scope.my_msg is '' then return
         if $scope.vote
           $io.emit 'game:vote', $scope.my_msg
+          $scope.vote = false
         else
           $io.emit 'game:msg', {
             content: $scope.my_msg
