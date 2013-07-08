@@ -9,14 +9,17 @@ html(ng-app='ghost')
     != assets.tag('/js/game/app.js')
 
   body
-    input#roomid(type='hidden', value=roomid)
-    if user
-      h1= user.name
-    else
-      p need login
-    .chat-box(ng-controller='ChatCtrl')
-      ul.msgs.unstyled
-        li.msg(ng-repeat='msg in msgs')
-          p(data-ng-class="{muted: msg.from == 'system'}") {{msg.from}}：{{msg.content}}
-      input(ng-model='my_msg', type="text")
-      button.btn.btn-primary(ng-click='sendMsg()') 发送
+    //- input#roomid(type='hidden', value=roomid)
+    //- if user
+    //-   h1= user.name
+    //- else
+    //-   p need login
+    
+    div(ng-view='')
+
+    // .chat-box(ng-controller='ChatCtrl')
+    //   ul.msgs.unstyled
+    //     li.msg(ng-repeat='msg in msgs')
+    //       p(data-ng-class="{muted: msg.from == 'system'}") {{msg.from}}：{{msg.content}}
+    //   input(ng-model='my_msg', type="text")
+    //   button.btn.btn-primary(ng-click='sendMsg()') 发送

@@ -36,14 +36,13 @@ module.exports = (app) ->
     app.use express.bodyParser!
     app.use express.methodOverride!
     app.use express.cookieParser 'ghost'
-    app.use express.static  __dirname + '/../public'
+    app.use express.static  __dirname + '/../assets'
     app.use express.session app.config.session
     app.use passport.initialize!
     app.use passport.session!
     app.use app.router
 
     # assets
-    # console.log rack
     app.use assets
     app.locals {
       assets: assets

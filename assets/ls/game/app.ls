@@ -1,10 +1,18 @@
-# <- $
-# socket = io.connect!
-# socket.emit 'room:join', {id: ($ '#roomid').val!}
-# socket.on 'room:join', -> alert \xxx
-# socket.emit 'game:start'
-
 angular.module 'ghost', [
   'ghost.controllers'
   'ghost.services'
 ]
+  .config ['$routeProvider', ($routeProvider) ->
+    $routeProvider
+      .when '/hall', {
+        templateUrl: '/templates/hall.html'
+        controller: 'HallCtrl'
+      }
+      .when '/game/:id', {
+        templateUrl: '/templates/game.html'
+        controller: 'GameCtrl'
+      }
+      .otherwise {
+        redirectTo: '/hall'
+      }
+  ]

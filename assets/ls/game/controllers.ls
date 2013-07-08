@@ -1,9 +1,18 @@
 (angular.module 'ghost.controllers', [
 ])
-  .controller 'ChatCtrl', [
+  # 大厅
+  .controller 'HallCtrl', [
     '$scope'
     '$io'
-    ($scope, $io)->
+    ($scope, $io) ->
+      $io.emit 'hall:enter'
+      $io.on 'hall:enter', ->
+        alert 'hall enter'
+  ]
+  .controller 'GameCtrl', [
+    '$scope'
+    '$io'
+    ($scope, $io) ->
       room = {id: ($ '#roomid').val!}
       $scope.msgs = []
       $scope.my_msg = ''
