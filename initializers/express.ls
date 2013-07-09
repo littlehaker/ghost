@@ -23,7 +23,7 @@ module.exports = (app) ->
       type: LiveScriptAsset
       urlPrefix: '/js'
       dirname: "#{__dirname}/../assets/ls/"
-      options: { watch: true, compress: true }
+      options: { watch: true, compress: false }
     }
   ]
   app.configure 'all', ->
@@ -32,7 +32,6 @@ module.exports = (app) ->
       layout: true
       pretty: true
     }
-    app.use express.favicon!
     app.use express.bodyParser!
     app.use express.methodOverride!
     app.use express.cookieParser 'ghost'

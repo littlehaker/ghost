@@ -3,16 +3,18 @@
   # 大厅
   .controller 'HallCtrl', [
     '$scope'
-    '$io'
-    ($scope, $io) ->
+    'Socket'
+    ($scope, Socket) ->
+      $io = Socket $scope
       $io.emit 'hall:enter'
       $io.on 'hall:enter', ->
         alert 'hall enter'
   ]
   .controller 'GameCtrl', [
     '$scope'
-    '$io'
-    ($scope, $io) ->
+    'Socket'
+    ($scope, Socket) ->
+      $io = Socket $scope
       room = {id: ($ '#roomid').val!}
       $scope.msgs = []
       $scope.my_msg = ''
