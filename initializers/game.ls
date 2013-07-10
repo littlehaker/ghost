@@ -1,4 +1,4 @@
 module.exports = (app) ->
-  GameCenter = (require '../lib/game-center') app
+  # Hall = (require '../lib/hall') app
 
-  app.GameCenter = new GameCenter
+  app.Hall = new app.lib.hall

@@ -5,7 +5,14 @@ module.exports = (app) ->
       user: req.user
       roomid: req.params.id
     }
-    
+
+  app.io.route 'room:create', (req) ->
+    user = req.handshake.user
+    room = app.Hall.createRoom {
+      creator: (new app.lib.player req)
+    }
+    req.io.respond room
+        
   app.io.route 'room:join', (req) ->
     user = req.handshake.user
     game = app.GameCenter.findGame req.data.id

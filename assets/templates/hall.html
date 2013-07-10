@@ -1,3 +1,15 @@
 <table class="table">
-  
+  <tr>
+    <th>id</th>
+    <th>房主</th>
+    <!-- <th></th> -->
+  </tr>
+  <tr ng-repeat="room in rooms" ng-click="enterRoom(room)">
+    <td>{{room.id}}</td>
+    <td>{{room.creator.name}}</td>
+    <!-- <td><a href="#/room/{{room.id}}">加入</a></td> -->
+  </tr>
 </table>
+<button class="btn btn-primary" ng-click="createRoom()">
+  创建房间
+</button>

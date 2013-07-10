@@ -3,12 +3,24 @@
   # 大厅
   .controller 'HallCtrl', [
     '$scope'
+    '$location'
     'Socket'
-    ($scope, Socket) ->
+    ($scope, $location, Socket) ->
       $io = Socket $scope
-      $io.emit 'hall:enter'
-      $io.on 'hall:enter', ->
-        alert 'hall enter'
+      $io.on 'room:created', (room) ->
+        $scope.rooms.push room
+        # $scope.enterRoom room.id
+      $io.emit 'hall:enter', null, (data) ->
+        $scope.rooms = data
+
+      $scope.createRoom = ->
+        $io.emit 'room:create', null, (data) ->
+          console.log data
+      $scope.enterRoom= (room) ->
+        $location.path "/room/#{room.id}"
+  ]
+  .controller 'RoomCtrl', [
+    ->
   ]
   .controller 'GameCtrl', [
     '$scope'

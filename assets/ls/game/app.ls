@@ -12,6 +12,10 @@ angular.module 'ghost', [
         templateUrl: '/templates/game.html'
         controller: 'GameCtrl'
       }
+      .when '/room/:id', {
+        templateUrl: '/templates/game.html'
+        controller: 'RoomCtrl'
+      }
       .otherwise {
         redirectTo: '/hall'
       }

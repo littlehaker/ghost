@@ -15,6 +15,7 @@ app = express!
 app.http!.io!
 
 load 'config', {extlist: ['.ls']}
+  .then 'lib'
   .then 'models'
   .then 'middlewares'
   .then 'initializers'
