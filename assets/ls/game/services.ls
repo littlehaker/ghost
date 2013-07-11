@@ -37,11 +37,9 @@ ScopedSocket::emit = (event, data, callback) ->
     '$rootScope'
     ($rootScope) ->
       socket = io.connect!
-      console.log 'factory'
       (scope) ->
         scopedSocket = new ScopedSocket socket, $rootScope
         scope.$on '$destroy', ->
-          console.log 'destroy'
           scopedSocket.removeAllListeners!
         scopedSocket
   ]

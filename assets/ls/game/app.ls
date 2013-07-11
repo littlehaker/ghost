@@ -13,7 +13,7 @@ angular.module 'ghost', [
         controller: 'GameCtrl'
       }
       .when '/room/:id', {
-        templateUrl: '/templates/game.html'
+        templateUrl: '/templates/room.html'
         controller: 'RoomCtrl'
       }
       .otherwise {

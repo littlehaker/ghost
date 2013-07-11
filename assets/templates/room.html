@@ -1,0 +1,17 @@
+房间名：{{room.name}}
+<br />
+玩家：
+<ul>
+  <li ng-repeat="player in room.players">
+    {{player.name}}
+    <span ng-show="isCreator(player)">房主</span>
+    <span ng-show="player.isReady">已准备</span>
+  </li>
+</ul>
+
+<button class="btn btn-primary" ng-click="ready()" ng-hide="isCreator(me)">
+  准备
+</button>
+<button class="btn btn-primary" ng-show="isCreator(me)">
+  开始
+</button>
