@@ -1,10 +1,9 @@
 Word = require '../models/word'
-_ = require 'underscore'
   
 module.exports = (app) ->
   class Game
     (opts) ->
-      @id = "Room:#{opts.id}"
+      @id = opts.id
       @players = {}
       @player_count = 0
       @ghosts = {}
@@ -13,26 +12,23 @@ module.exports = (app) ->
       @current_order = 0
       @round = 0
       @max_vote = 0
-      opts.players |> each ~>
-        debug "加入#{it.user.name}"
-        @join it
-    join: (player) ->
+    join: (player) ~>
       if not @players[player.user._id]
         player.vote = 0
         @players[player.user._id] = player
         @player_count = @player_count + 1
-        player.io.join @id
-        # if @player_count is 3 then @start!
-    broadcastSysMsg: (data) ->
+        player.socket.join @id
+        if @player_count is 3 then @start!
+    broadcastSysMsg: (data) ~>
       @broadcast 'game:sysmsg', data
-    broadcast: (msg, data) ->
+    broadcast: (msg, data) ~>
       app.io.room @id .broadcast msg, data
-    start: ->
+    start: ~>
       # @broadcast 'game:start'
       @broadcast 'game:sysmsg', '游戏开始！'
       @alloc!
-    end: ->
-    onVote: (user, data) ->
+    end: ~>
+    onVote: (user, data) ~>
       player = @players[user._id]
       # 记票
       each (p) ~>
@@ -41,7 +37,7 @@ module.exports = (app) ->
           if p.vote > @max_vote
             @max_vote = p.vote
       , @players
-    onMsg: (user, data) ->
+    onMsg: (user, data) ~>
       player = @players[user.id]
       data.from = user.name
       @broadcast 'game:msg', data
@@ -49,27 +45,27 @@ module.exports = (app) ->
         @current_order = @current_order + 1
         @nextPlayer!
     # 分配身份
-    alloc: ->
+    alloc: ~>
       err, word <~ Word.random
       @word = word
-      debug word.words
+      debug err, word
       [word1, word2] = word.words.split ','
       for key, player of @players
         @order.push key
-      for key, i in (_.shuffle @order)
-        player = @players[key]
-        if i is 0
+        if player.user.name is 'a'
           player.role = 'ghost'
           player.word = word1
           @ghosts[key] = player
+          # player.socket.emit 'game:sysmsg', '你是鬼'
         else
           player.role = 'peasant'
           player.word = word2
           @peasants[key] = player
-        player.io.emit 'game:sysmsg', "你的词语是#{player.word}"
+          # player.socket.emit 'game:sysmsg', '你是平民'
+        player.socket.emit 'game:sysmsg', "你的词语是#{player.word}"
       # 开始第一轮
       @nextRound!
-    endVote: ->
+    endVote: ~>
       each (p) ~>
         @broadcastSysMsg "#{p.user.name}得票#{p.vote}"
       , @players
@@ -97,19 +93,19 @@ module.exports = (app) ->
         return
       @order = @order |> (filter -> it isnt player.user.id) |> reverse
       @nextRound!
-    startVote: ->
+    startVote: ~>
       @broadcast 'game:vote'
       setTimeout ~>
         @endVote!
       , 10000 
-    nextPlayer: ->
+    nextPlayer: ~>
       if @current_order is @order.length
         @broadcast 'game:sysmsg', '本轮发言结束，开始投票，投票将在10秒内结束'
         @startVote!
       else
         player = @players[@order[@current_order]]
         @broadcast 'game:sysmsg', "该#{player.user.name}发言"
-    nextRound: ->
+    nextRound: ~>
       @round += 1
       @current_order = 0
       @broadcast 'game:sysmsg', "第#{@round}轮"

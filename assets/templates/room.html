@@ -8,10 +8,28 @@
     <span ng-show="player.isReady">已准备</span>
   </li>
 </ul>
-
+<hr />
+<div ng-show="gameStarted">
+<div class="chat-box" ng-controller="GameCtrl">
+  <ul class="msgs unstyled">
+    <li class="msg" ng-repeat="msg in msgs">
+      <p data-ng-class="{muted: msg.from == 'system'}">
+        {{msg.from}}：{{msg.content}}
+      </p>
+    </li>
+  </ul>
+  <input type="text" ng-model="my_msg" />
+  <button class="btn btn-primary" ng-click="sendMsg()">
+    发送
+  </button>
+</div>
+<hr />
+</div>
+<div ng-hide="gameStarted">
 <button class="btn btn-primary" ng-click="ready()" ng-hide="isCreator(me)">
   准备
 </button>
-<button class="btn btn-primary" ng-show="isCreator(me)">
+<button class="btn btn-primary" ng-show="isCreator(me)" ng-click="startGame()">
   开始
 </button>
+</div>

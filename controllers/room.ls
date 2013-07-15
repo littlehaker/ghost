@@ -22,6 +22,7 @@ module.exports = (app) ->
     user = req.handshake.user
     player = (new Player req)
     roomId = req.data.id
+    req.session.roomId = roomId
     info "user #{user.name} joins room:#roomId"
     room = Hall.findRoom roomId
     if room
@@ -40,6 +41,15 @@ module.exports = (app) ->
     room = Hall.findRoom roomId
     if room
       room.ready player
+
+  app.io.route 'room:start:game', (req) ->
+    player = (new Player req)
+    roomId = req.data.id
+    room = Hall.findRoom roomId
+    if room
+      if room.creator.user.id is player.user.id
+        debug 'game start!'
+        room.startGame!
     # game = app.GameCenter.findGame req.data.id
     # game.join {
     #   user: user

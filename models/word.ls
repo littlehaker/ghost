@@ -10,6 +10,7 @@ schema = new mongoose.Schema {
 
 schema.statics.random = (cb) ->
   rand = Math.random!
+  debug rand
   err, word <~ @findOne {
     random: { $gte : rand }
   }

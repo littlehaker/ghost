@@ -27,6 +27,8 @@
     ($scope, $routeParams, Socket) ->
       id = $routeParams.id
       $io = Socket $scope
+      $io.on 'room:game:started', ->
+        $scope.gameStarted = true
       $io.on 'room:join', (player) ->
         console.log 'player join'
         $scope.room.players.push player
@@ -42,6 +44,10 @@
         $io.emit 'room:ready', {
           id: id
         }
+      $scope.startGame = ->
+        $io.emit 'room:start:game', {
+          id: id
+        }
       $scope.isCreator = (player) ->
         if not $scope.room
           false
@@ -53,28 +59,33 @@
     'Socket'
     ($scope, Socket) ->
       $io = Socket $scope
-      room = {id: ($ '#roomid').val!}
+      # room = {id: ($ '#roomid').val!}
       $scope.msgs = []
       $scope.my_msg = ''
       $io.on 'game:vote', ->
         $scope.vote = true
+        console.log \vote
       $io.on 'game:msg', (data) ->
-        $scope.$apply ->
-          $scope.msgs.push data
+        $scope.msgs.push data
+        console.log \msg
       $io.on 'game:sysmsg', (content)->
-        $scope.$apply ->
-          $scope.msgs.push {
-            from: 'system'
-            content: content
-          }
-      $io.emit 'room:join', room
+        console.log \sysmsg
+        $scope.msgs.push {
+          from: 'system'
+          content: content
+        }
+      # $io.emit 'room:join', room
       $scope.sendMsg = ->
         if $scope.my_msg is '' then return
         if $scope.vote
-          $io.emit 'game:vote', $scope.my_msg
+          $io.emit 'game:vote', {
+            # id: $scope.id
+            content: $scope.my_msg
+          }
           $scope.vote = false
         else
           $io.emit 'game:msg', {
+            # id: $scope.id
             content: $scope.my_msg
           }
         $scope.my_msg = ''

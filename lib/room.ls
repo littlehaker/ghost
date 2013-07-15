@@ -24,4 +24,12 @@ module.exports = (app) ->
       # 如果都准备了就开始?
       roomStr = "Room:#{@id}"
       app.io.room roomStr .broadcast 'room:ready', player.format!
+    startGame: ->
+      @game = new app.lib.game {
+        id: @id
+        players: @players
+      }
+      @game.start!
+      roomStr = "Room:#{@id}"
+      app.io.room roomStr .broadcast 'room:game:started'
       
